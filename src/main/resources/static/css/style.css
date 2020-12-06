@@ -1,0 +1,18 @@
+html, body {
+    font-size:  18px;
+}
+
+.btn {
+    display: inline-block;
+    border: dimgray solid 2px;
+    border-radius: 5px;
+    padding: 5pt;
+    color: black;
+    text-decoration: none;
+    background: antiquewhite;
+}
+
+.btn:hover {
+    border: black solid 2px;
+    background: bisque;
+}
