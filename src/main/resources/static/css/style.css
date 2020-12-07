@@ -16,3 +16,47 @@ html, body {
     border: black solid 2px;
     background: bisque;
 }
+
+.disabled, .disabled:hover {
+    pointer-events: none;
+    border: darkgray solid 2px;
+    background: antiquewhite;
+    color: darkgray;
+}
+
+.question-wrapper {
+    height: 90vh;
+}
+
+.question {
+    padding: 10px;
+}
+
+.answer {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    align-items: center;
+    padding: 10px 100px;
+}
+
+.button-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+}
+
+.result {
+    display: grid;
+    justify-items: center;
+    padding: 20px;
+}
+
+.pos {
+    font-size: 30px;
+    color: #070;
+}
+
+.neg {
+    font-size: 30px;
+    color: #700;
+}

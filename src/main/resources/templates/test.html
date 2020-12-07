@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вопрос</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="question-wrapper">
+    <div th:text="${ques.text}" class="question"></div>
+    <div th:each="answer:${ques.answers}" class="answer">
+        <input form="answer" th:id="${answer.id}" type="radio"
+               name="answer" th:value="${answer.text.substring(0, 1)}"
+               th:disabled="${ques.userAnswer!=0}">
+        <label th:for="${answer.id}" th:text="${answer.text}"></label>
+    </div>
+
+    <div th:if="${ques.userAnswer!=0}" class="result">
+        <div th:if="${ques.userAnswer==ques.trueAnswer}" class="pos">ВЕРНО!</div>
+        <div th:if="${ques.userAnswer!=ques.trueAnswer}" class="neg">НЕВЕРНО!</div>
+        <div>
+            <span>Ваш ответ: </span>
+            <span th:text="${ques.userAnswer}"></span>
+        </div>
+        <div>
+            <span>Верный ответ: </span>
+            <span th:text="${ques.trueAnswer}"></span>
+        </div>
+    </div>
+
+    <div class="result">
+        <div>
+            <span th:text="${trueAnswers}"></span>
+            <span> верных ответов из </span>
+            <span th:text="${qlength}"></span>
+        </div>
+    </div>
+
+</div>
+<div class="button-wrapper">
+    <a th:href="${ques.id - 1}" class="btn" th:classappend="${ques.id <= 1}?disabled">Назад</a>
+    <input type="submit" id="submitAns" form="answer" class="btn disabled" value="Ответ" disabled>
+    <a th:href="${ques.id + 1}" class="btn" th:classappend="${ques.id >= qlength}?disabled">Дальше</a>
+</div>
+
+<form id="answer" method="post">
+    <input type="hidden" name="url" th:value="${#httpServletRequest.getRequestURI()}">
+</form>
+
+<script>
+    $("input[type=radio]").on("change", function () {
+        $("input#submitAns").prop("disabled", false).removeClass("disabled");
+    });
+</script>
+</body>
+</html>

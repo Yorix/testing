@@ -5,15 +5,17 @@ import com.yorix.testing.model.Question;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class TextParser {
-    @Value("/static/tests.txt")
+    @Value("static/tests.txt")
     private ClassPathResource resource;
 
     private final QuestionService questionService;
@@ -28,12 +30,16 @@ public class TextParser {
 
     public void parse() {
         try {
-            rawText = Files.lines(resource.getFile().toPath(), StandardCharsets.UTF_8).collect(Collectors.joining("\r\n"));
+            byte[] data = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            rawText = new String(data, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String[] lines = rawText.split("(?=\r\n\\*?\\d{1,3}\\.\\s)");
+        String[] lines = rawText.split("\r\n(?=\\*?\\d{1,3}\\.\\s)");
+
+        List<Question> questions = new ArrayList<>();
+        List<Answer> answers = new ArrayList<>();
 
         Question question = new Question();
         Answer answer;
@@ -41,18 +47,23 @@ public class TextParser {
         for (int i = 1; i < lines.length; i++) {
             if ((i - 1) % 5 == 0) {
                 question = new Question();
-                question.setText(lines[i].concat("\r\n"));
-                questionService.create(question);
+                question.setText(lines[i]);
+                questions.add(question);
             } else {
                 answer = new Answer();
                 answer.setQuestion(question);
-                if (lines[i].charAt(2) == '*') {
-                    answer.setTrue_ans(true);
-                    lines[i] = "\r\n".concat(lines[i].substring(3));
+                if (lines[i].charAt(0) == '*') {
+                    int trueAnswerNumber = Integer.parseInt(lines[i].substring(1, 2));
+                    question.setTrueAnswer(trueAnswerNumber);
                 }
-                answer.setText(lines[i].concat("\r\n"));
-                answerService.create(answer);
+                lines[i] = lines[i].replaceAll("^\\*?|Джерело:.*$", "");
+                answer.setText(lines[i]);
+                answers.add(answer);
             }
         }
+
+        Collections.shuffle(questions);
+        questions.forEach(questionService::create);
+        answers.forEach(answerService::create);
     }
 }

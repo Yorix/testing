@@ -18,7 +18,15 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
+    public Question read(int id) {
+        return questionRepository.getOne(id);
+    }
+
     public void create(Question question) {
         questionRepository.save(question);
+    }
+
+    public void update(Question question) {
+        create(question);
     }
 }

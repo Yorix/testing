@@ -12,7 +12,6 @@ public class Answer {
     private int id;
     @Lob
     private String text;
-    private boolean true_ans;
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
