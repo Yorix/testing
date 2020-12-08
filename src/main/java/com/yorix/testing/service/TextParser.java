@@ -36,7 +36,7 @@ public class TextParser {
             e.printStackTrace();
         }
 
-        String[] lines = rawText.split("\r\n(?=\\*?\\d{1,3}\\.\\s)");
+        String[] lines = rawText.split("\r\n(?=\\*?(\\d{1,3}\\.|[АБВГ]\\))\\s)");
 
         List<Question> questions = new ArrayList<>();
         List<Answer> answers = new ArrayList<>();
@@ -44,20 +44,21 @@ public class TextParser {
         Question question = new Question();
         Answer answer;
 
-        for (int i = 1; i < lines.length; i++) {
-            if ((i - 1) % 5 == 0) {
+        for (String line : lines) {
+            line = line.trim().replaceAll("\r\n.*$", "");
+            if (line.matches("^\\d\\.\\s.+")) {
                 question = new Question();
-                question.setText(lines[i]);
+                question.setText(line);
                 questions.add(question);
-            } else {
+            } else if (line.matches("^\\*?[АБВГ]\\)\\s.+")){
                 answer = new Answer();
                 answer.setQuestion(question);
-                if (lines[i].charAt(0) == '*') {
-                    int trueAnswerNumber = Integer.parseInt(lines[i].substring(1, 2));
+                if (line.charAt(0) == '*') {
+                    line = line.substring(1);
+                    int trueAnswerNumber = line.charAt(0) - 1039;
                     question.setTrueAnswer(trueAnswerNumber);
                 }
-                lines[i] = lines[i].replaceAll("^\\*?|Джерело:.*$", "");
-                answer.setText(lines[i]);
+                answer.setText(line);
                 answers.add(answer);
             }
         }

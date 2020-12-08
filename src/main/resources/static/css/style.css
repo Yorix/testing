@@ -45,7 +45,7 @@ html, body {
     justify-items: center;
 }
 
-.result {
+.grid-center {
     display: grid;
     justify-items: center;
     padding: 20px;

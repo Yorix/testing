@@ -17,7 +17,7 @@
         <label th:for="${answer.id}" th:text="${answer.text}"></label>
     </div>
 
-    <div th:if="${ques.userAnswer!=0}" class="result">
+    <div th:if="${ques.userAnswer!=0}" class="grid-center">
         <div th:if="${ques.userAnswer==ques.trueAnswer}" class="pos">ВЕРНО!</div>
         <div th:if="${ques.userAnswer!=ques.trueAnswer}" class="neg">НЕВЕРНО!</div>
         <div>
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="result">
+    <div class="grid-center">
         <div>
             <span th:text="${trueAnswers}"></span>
             <span> верных ответов из </span>
