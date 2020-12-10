@@ -8,6 +8,15 @@
 </head>
 <body>
 
+<div class="grid-c3-center">
+    <div th:text="'Вопрос ' + ${index} + ' / ' + ${questionsSize}" class="large-text"></div>
+    <a href="/" class="btn">Сбросить и начать заново</a>
+    <div class="large-text">
+        <span th:text="${trueAnswers}" class="pos"></span>
+        <span>/</span>
+        <span th:text="${falseAnswers}" class="neg"></span>
+    </div>
+</div>
 <div class="question-wrapper">
     <div th:text="${ques.text}" class="question"></div>
     <div th:each="answer:${ques.answers}" class="answer">
@@ -17,9 +26,9 @@
         <label th:for="${answer.id}" th:text="${answer.text}"></label>
     </div>
 
-    <div th:if="${ques.userAnswer!=0}" class="grid-center">
-        <div th:if="${ques.userAnswer==ques.trueAnswer}" class="pos">ВЕРНО!</div>
-        <div th:if="${ques.userAnswer!=ques.trueAnswer}" class="neg">НЕВЕРНО!</div>
+    <div th:if="${ques.userAnswer!=0}" class="grid-c1-center p20">
+        <div th:if="${ques.userAnswer==ques.trueAnswer}" class="large-text pos">ВЕРНО!</div>
+        <div th:if="${ques.userAnswer!=ques.trueAnswer}" class="large-text neg">НЕВЕРНО!</div>
         <div>
             <span>Ваш ответ: </span>
             <span th:text="${ques.userAnswer}"></span>
@@ -30,19 +39,11 @@
         </div>
     </div>
 
-    <div class="grid-center">
-        <div>
-            <span th:text="${trueAnswers}"></span>
-            <span> верных ответов из </span>
-            <span th:text="${qlength}"></span>
-        </div>
-    </div>
-
 </div>
-<div class="button-wrapper">
-    <a th:href="${ques.id - 1}" class="btn" th:classappend="${ques.id <= 1}?disabled">Назад</a>
+<div class="grid-c3-center">
+    <a th:href="${index - 1}" class="btn" th:classappend="${index <= 1}?disabled">Назад</a>
     <input type="submit" id="submitAns" form="answer" class="btn disabled" value="Ответ" disabled>
-    <a th:href="${ques.id + 1}" class="btn" th:classappend="${ques.id >= qlength}?disabled">Дальше</a>
+    <a th:href="${index + 1}" class="btn" th:classappend="${index >= questionsSize}?disabled">Дальше</a>
 </div>
 
 <form id="answer" method="post">

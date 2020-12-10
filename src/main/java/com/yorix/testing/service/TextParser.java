@@ -10,7 +10,6 @@ import org.springframework.util.FileCopyUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -46,11 +45,11 @@ public class TextParser {
 
         for (String line : lines) {
             line = line.trim().replaceAll("\r\n.*$", "");
-            if (line.matches("^\\d\\.\\s.+")) {
+            if (line.matches("^\\d{1,3}\\.\\s.+")) {
                 question = new Question();
                 question.setText(line);
                 questions.add(question);
-            } else if (line.matches("^\\*?[АБВГ]\\)\\s.+")){
+            } else if (line.matches("^\\*?[АБВГ]\\)\\s.+")) {
                 answer = new Answer();
                 answer.setQuestion(question);
                 if (line.charAt(0) == '*') {
@@ -63,7 +62,6 @@ public class TextParser {
             }
         }
 
-        Collections.shuffle(questions);
         questions.forEach(questionService::create);
         answers.forEach(answerService::create);
     }

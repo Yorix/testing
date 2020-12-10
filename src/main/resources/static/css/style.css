@@ -25,7 +25,7 @@ html, body {
 }
 
 .question-wrapper {
-    height: 90vh;
+    height: 80vh;
 }
 
 .question {
@@ -39,24 +39,29 @@ html, body {
     padding: 10px 100px;
 }
 
-.button-wrapper {
+.grid-c1-center {
+    display: grid;
+    justify-items: center;
+}
+
+.grid-c3-center {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
 }
 
-.grid-center {
-    display: grid;
-    justify-items: center;
+.p20 {
     padding: 20px;
 }
 
-.pos {
+.large-text {
     font-size: 30px;
-    color: #070;
+}
+
+.pos {
+    color: #0A0;
 }
 
 .neg {
-    font-size: 30px;
-    color: #700;
+    color: #A00;
 }

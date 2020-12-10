@@ -14,6 +14,7 @@ import java.util.List;
 @Controller
 public class MainController {
     private final QuestionService questionService;
+    private List<Question> questions;
 
     public MainController(QuestionService questionService) {
         this.questionService = questionService;
@@ -21,31 +22,36 @@ public class MainController {
 
     @GetMapping
     public String index() {
+        questions = questionService.readRandom(100);
         return "index";
     }
 
-    @GetMapping("/testing/{id}")
-    public ModelAndView question(@PathVariable int id) {
-        Question question = questionService.read(id);
+    @GetMapping("/testing/{num}")
+    public ModelAndView question(@PathVariable int num) {
+        Question question = questions.get(num - 1);
         ModelAndView modelAndView = new ModelAndView("test");
-        List<Question> questions = questionService.read();
-        long trueAnswers = questions.stream()
-                .filter(q -> q.getTrueAnswer() == q.getUserAnswer())
+        int trueAnswers = (int) questions.stream()
+                .filter(q -> q.getUserAnswer() == q.getTrueAnswer())
+                .count();
+        int falseAnswers = (int) questions.stream()
+                .filter(q -> q.getUserAnswer() != q.getTrueAnswer() && q.getUserAnswer() != 0)
                 .count();
         modelAndView.addObject("ques", question);
-        modelAndView.addObject("qlength", questions.size());
+        modelAndView.addObject("index", num);
+        modelAndView.addObject("questionsSize", questions.size());
         modelAndView.addObject("trueAnswers", trueAnswers);
+        modelAndView.addObject("falseAnswers", falseAnswers);
         return modelAndView;
     }
 
-    @PostMapping("/testing/{id}")
+    @PostMapping("/testing/{num}")
     public String answer(
-            @PathVariable int id,
-            @RequestParam int answer,
+            @PathVariable int num,
+            @RequestParam char answer,
             @RequestParam String url
     ) {
-        Question question = questionService.read(id);
-        question.setUserAnswer(answer);
+        Question question = questions.get(num - 1);
+        question.setUserAnswer(answer - 1039);
         questionService.update(question);
         return "redirect:".concat(url);
     }

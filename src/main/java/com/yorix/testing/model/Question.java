@@ -18,5 +18,6 @@ public class Question {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "question")
     private List<Answer> answers;
     private int trueAnswer;
+    @Transient
     private int userAnswer;
 }
