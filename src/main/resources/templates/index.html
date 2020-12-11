@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Начало</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
-<div class="grid-c1-center">
-    <a href="/testing/1" class="btn">Начать тестирование</a>
-</div>
-
+<form action="/testing" method="post">
+    <div class="grid-c1-center p20">
+        <label for="num">Количество вопросов в тесте: </label>
+        <input id="num" type="number" min="1" max="1000" value="100" name="num">
+        <input type="submit" class="btn m20" value="Начать тестирование">
+    </div>
+</form>
 </body>
 </html>

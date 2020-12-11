@@ -7,6 +7,7 @@ html, body {
     border: dimgray solid 2px;
     border-radius: 5px;
     padding: 5pt;
+    font-size:  1rem;
     color: black;
     text-decoration: none;
     background: antiquewhite;
@@ -52,6 +53,10 @@ html, body {
 
 .p20 {
     padding: 20px;
+}
+
+.m20 {
+    margin: 20px;
 }
 
 .large-text {

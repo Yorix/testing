@@ -22,7 +22,6 @@ public class MainController {
 
     @GetMapping
     public String index() {
-        questions = questionService.readRandom(100);
         return "index";
     }
 
@@ -42,6 +41,12 @@ public class MainController {
         modelAndView.addObject("trueAnswers", trueAnswers);
         modelAndView.addObject("falseAnswers", falseAnswers);
         return modelAndView;
+    }
+
+    @PostMapping("/testing")
+    public String setQuestionsNumber(int num) {
+        questions = questionService.readRandom(num);
+        return "redirect:/testing/1";
     }
 
     @PostMapping("/testing/{num}")
